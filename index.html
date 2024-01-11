@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Formulario Whatsapp</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<style>
+
+		.image-icon-whatsapp{
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			cursor: pointer;
+			transition: all 0.2s;
+		}
+
+		.image-icon-whatsapp:hover{
+			transform: scale(0.9);
+		}
+
+		.image-icon-whatsapp:active{
+			transform: scale(0.8);
+		}
+
+		.formulariowtsp{
+			width: 220px;
+			height: 280px;
+			background:orange;
+			border-radius: 5px;
+			position: absolute;
+			bottom: 90px;
+			right: 60px;
+			box-shadow: 0 2px 20px 0 rgba(0,0,0,0.22);
+			background:white;
+			padding: 5px 10px;
+			display: none;
+		}
+
+		.inputwts{
+			width: 100%;
+			box-sizing: border-box;
+			padding: 5px;
+			font-family: arial;
+			font-size: 13px;
+			border-radius: 5px;
+			border:1px solid rgba(0,0,0,0.19);
+			color: #666;
+
+
+		}
+
+		.inputwts:focus{
+			outline: none;
+		}
+
+		.textareawts{
+			width: 100%;
+			min-width: 100%;
+			box-sizing: border-box;
+			height: 140px;
+			max-height: 140px;
+			min-height: 140px;
+			font-family: arial;
+			font-size: 13px;
+			border-radius: 5px;
+			padding: 5px;
+			border:1px solid rgba(0,0,0,0.19);
+			color: #666;
+
+
+		}
+
+		.textareawts:focus{
+			outline: none;
+		}
+
+		.newmessagewts{
+			font-family: arial;
+			display: block;
+			text-align: center;
+			width: 100%;
+			box-sizing: border-box;
+			line-height: 10px;
+		}
+		.btnwtsp{
+			width: 100%;
+			border: none;
+			padding: 5px;
+			background: #00a82d;
+			border-radius: 5px;
+			color: white;
+			cursor: pointer;
+		}
+
+		label{
+			font-family: arial;
+			font-size: 14px;
+			color: #333333;
+		}
+
+		.entrarysalir{
+			display: block;
+		}
+		.closemodal{
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 5px;
+			background: #00a82d;
+			width: 15px;
+			height: 15px;
+			border-radius: 100%;
+			color: white;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 10px;
+			line-height: 15px;
+			cursor: pointer;
+		}
+
+
+	</style>
+</head>
+<body>
+
+	<a href="https://api.whatsapp.com/send?phone=931161425&text=Hola%20Jhon" target="_blank">api de whatsapp</a>
+	<div>
+		<div>
+			<form id="formulariowtsp" action="" class="formulariowtsp">
+				<p id="titulo" class="newmessagewts">Nuevo mensaje</p> <span class="closemodal">x</span>
+				<label for="">Nombre</label>
+				<input id="inputname" class="inputwts" type="text" required="" placeholder="Nombre" autocomplete="off">
+				<label for="">Mensaje</label>
+				<textarea id="inputmensaje" name="" id="" cols="30" rows="10" class="textareawts" required=""></textarea>
+				<div class="producto">
+					<h3 class="nombre-producto">Nombre del Producto 1</h3>
+					<h3 class="cantidad-producto">Cantidad: 2</h3>
+					<h3 class="precio-producto">Precio: $10.99</h3>
+				</div>
+				<div class="producto">
+					<h3 class="nombre-producto">Nombre del Producto 2</h3>
+					<h3 class="cantidad-producto">Cantidad: 5</h3>
+					<h3 class="precio-producto">Precio: $77.99</h3>
+				</div>
+
+				<button type="submit" id="sendbttn" class="btnwtsp">Enviar mensaje</button type="submit">
+			</form>
+		</div>
+		<img id="icon-whatsapp" class="image-icon-whatsapp" src="img/whatsapp.webp" alt="" width="70">
+	</div>
+
+	
+	<script>
+		var IconWhatsapp = document.querySelector('#icon-whatsapp');
+		var formulariowtsp = document.getElementById('formulariowtsp');
+		var closemodal = document.querySelector('.closemodal');
+		var sendbttn = document.querySelector('#sendbttn');
+
+		
+		IconWhatsapp.addEventListener('click' , function(){
+			formulariowtsp.classList.toggle('entrarysalir')
+		})
+
+		closemodal.addEventListener('click' , function(){
+			formulariowtsp.classList.remove('entrarysalir')
+		})
+
+		sendbttn.addEventListener('click' , EnviarMensaje)
+
+
+var tituloMensaje = "Checkout | *_STYLE FRENZZY_ 💎*";  // Inicializamos una variable para almacenar el título del mensaje
+
+function EnviarMensaje() {
+	let name = document.querySelector('#inputname').value;
+	let mensaje = document.querySelector('#inputmensaje').value;
+	let productos = document.querySelectorAll('.producto');
+	let mensajeProductos = "Productos:\n";
+
+	productos.forEach(function (producto) {
+		let nombre = producto.querySelector('.nombre-producto').innerText;
+		let cantidad = producto.querySelector('.cantidad-producto').innerText;
+		let precio = producto.querySelector('.precio-producto').innerText;
+
+		mensajeProductos += `✔ *${nombre} - ${cantidad} \n       ${precio}\n`;
+	});
+
+	// Concatenamos el título al inicio del mensaje
+	let mensajeCompleto = `${tituloMensaje}\n\nNombre: ${name}\nMensaje: ${mensaje}\n\n${mensajeProductos}`;
+
+	// Construir la URL de WhatsApp con el mensaje completo
+	let url = `https://api.whatsapp.com/send?phone=51931161425&text=${encodeURIComponent(mensajeCompleto)}`;
+	
+	// Abrir la ventana de WhatsApp
+	window.open(url);
+
+	// Limpia el título después de enviar el mensaje si es necesario
+	tituloMensaje = "";
+}
+
+// Función para establecer el título del mensaje
+function SetTitulo() {
+	// Podrías obtener el título desde algún otro elemento en la página o mediante algún método
+	// En este ejemplo, simplemente estableceremos un título fijo
+	tituloMensaje = "Mensaje Importante";
+}
+
+
+
+	</script>
+</body>
+</html>
